@@ -10,7 +10,7 @@
 #include <WiFiClientSecure.h>
 
 #define FORMAT_LITTLEFS_IF_FAILED true
-#define FW_VERSION "1.0.34"
+#define FW_VERSION "1.0.35"
 #define FW_TITLE "Tank_Level"
 #define LED 2
 #define DHTTYPE DHT22          // DHT 22  (AM2302)
