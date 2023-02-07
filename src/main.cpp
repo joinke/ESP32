@@ -9,8 +9,16 @@
 #include <LITTLEFS.h>
 #include <WiFiClientSecure.h>
 
+#ifdef DEBUG
+#define DEBUG(fmt) Serial.print(fmt)
+#define DEBUGLN(fmt) Serial.println(fmt)
+#else 
+#define DEBUG(fmt)
+#define DEBUGLN(fmt)
+#endif
+
 #define FORMAT_LITTLEFS_IF_FAILED true
-#define FW_VERSION "1.0.35"
+#define FW_VERSION "1.0.36"
 #define FW_TITLE "Tank_Level"
 #define LED 2
 #define DHTTYPE DHT22          // DHT 22  (AM2302)
@@ -184,19 +192,25 @@ void sendDataTcp(float t, float h, int l)
 
   if (deepsleep)
   {
-    Serial.print("Deep sleep value : ");
-    Serial.println(deepsleep);
+    DEBUG("Deepsleep : ");
+    //Serial.print("Deep sleep value : ");
+    DEBUGLN(deepsleep);
+    //Serial.println(deepsleep);
     esp_sleep_enable_timer_wakeup(deepsleep * uS_TO_S_FACTOR);
     params.deepsleep = deepsleep;
   }
   if (fw_cycle) {
-    Serial.print("Firmware Cycle : ");
-    Serial.println(fw_cycle);
+    DEBUG("Firmware Cycle :");
+    //Serial.print("Firmware Cycle : ");
+    DEBUGLN(fw_cycle);
+    //Serial.println(fw_cycle);
     params.fw_cycle = fw_cycle;
   }
   client.stop();
-  Serial.print("OTA : ");
-  Serial.println(ota);
+  DEBUG("OTA : ");
+  //Serial.print("OTA : ");
+  DEBUGLN(ota);
+  //Serial.println(ota);
   if (ota)
   {
     //Serial.println("OTA received : true");
@@ -448,16 +462,21 @@ void setup()
   {
   
     // token exist
-    Serial.print("Token is :");
-    Serial.println(token);
+    DEBUG("Token is :");
+    //Serial.print("Token is :");
+    DEBUGLN(token);
+    //Serial.println(token);
     esp_sleep_enable_timer_wakeup(params.deepsleep * uS_TO_S_FACTOR);
     firmware_info["current_" FW_VERSION_ATTR] = FW_VERSION;
     firmware_info["current_" FW_TITLE_ATTR] = FW_TITLE;
     params.checkFirmware += 1;
     delay(1);
-    Serial.print("Firmware counter : ");
-    Serial.println(params.checkFirmware);
-    Serial.println("Current Firmware : " FW_VERSION);
+    DEBUG("Firmare counter : ");
+    //Serial.print("Firmware counter : ");
+    DEBUGLN(params.checkFirmware);
+    //Serial.println(params.checkFirmware);
+    DEBUGLN("Current Firmware : " FW_VERSION);
+    //Serial.println("Current Firmware : " FW_VERSION);
 
     connect_wifi();
 
@@ -472,16 +491,25 @@ void setup()
     if (isnan(temperature)) { temperature = 999; };
     if (isnan(humidity)) { humidity = 0;}; 
     sendDataTcp(temperature,humidity,level);
-    Serial.print("Temperature : ");
-    Serial.println(temperature);
-    Serial.print("Humidity : ");
-    Serial.println(humidity);
-    Serial.print("Level: ");
-    Serial.println(level);
-    Serial.print("Deepsleep: ");
-    Serial.println(params.deepsleep);
+    DEBUG("Temperature :");
+    //Serial.print("Temperature : ");
+    DEBUGLN(temperature);
+    //Serial.println(temperature);
+    DEBUG("Humidity : ");
+    //Serial.print("Humidity : ");
+    DEBUGLN(humidity);
+    //Serial.println(humidity);
+    DEBUG("Level : ");
+    //Serial.print("Level: ");
+    DEBUGLN(level);
+    //Serial.println(level);
+    DEBUG("Deepsleep : ");
+    //Serial.print("Deepsleep: ");
+    DEBUGLN(params.deepsleep);
+    //Serial.println(params.deepsleep);
     digitalWrite(LED, LOW);
-    Serial.println("Going to sleep...");
+    DEBUGLN("Going to sleep ... ");
+    //Serial.println("Going to sleep...");
     esp_deep_sleep_start();
   }
 }
