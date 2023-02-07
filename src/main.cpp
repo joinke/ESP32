@@ -468,7 +468,7 @@ void setup()
     sensorDhtData(&temperature,&humidity);
     sensorLevel(&level);
     delay(20);
-    sendSecureDataTcp();
+    //sendSecureDataTcp();
     if (isnan(temperature)) { temperature = 999; };
     if (isnan(humidity)) { humidity = 0;}; 
     sendDataTcp(temperature,humidity,level);
